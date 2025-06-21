@@ -17,7 +17,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_POKKIT_AI }}
-          projectId: pokkit-ai
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_POKKIT_REALTIME_CHAT }}
+          projectId: pokkit-realtime-chat
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
