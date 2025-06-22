@@ -7,24 +7,39 @@ import { pb } from "@/config/pocketbaseConfig";
 import { cn } from "@/lib/utils";
 import { createMessageRecord } from "@/modules/messages/dbMessageRecordsUtils";
 import { useMessageRecordsStore } from "@/modules/messages/messageRecordsStore";
+import { useUsersStore } from "@/modules/users/usersStore";
+import { ChatMessage } from "@/components/ChatMessage";
 
 import { useState } from "react";
 
 export const MessageScreen = (p: { userId: string }) => {
   const [text, setText] = useState("");
   const messageRecordsStore = useMessageRecordsStore();
+  const usersStore = useUsersStore();
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <MainLayout fillPageExactly padding={false}>
       <div className="flex h-full flex-col">
-        <ScrollContainer>
-          <pre>{JSON.stringify(messageRecordsStore.data, undefined, 2)}</pre>
-          <div>asd</div>
-          <div>asd</div>
+        <ScrollContainer className="p-2">
+          <div className="flex flex-col gap-1">
+            {messageRecordsStore.data.map((message) => {
+              const user = usersStore.data.find((u) => u.id === message.userId);
+              const isOwnMessage = message.userId === p.userId;
+
+              return (
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  user={user}
+                  isOwnMessage={isOwnMessage}
+                />
+              );
+            })}
+          </div>
         </ScrollContainer>
 
-        <div className="p-4 pt-1">
+        <div className="p-2 pt-1">
           <form className="relative">
             <Textarea
               placeholder="Type your message here."
