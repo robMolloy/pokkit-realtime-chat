@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { pb } from "@/config/pocketbaseConfig";
 import { logout } from "@/modules/auth/dbAuthUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
-import { useCurrentUserStore } from "@/stores/authDataStore";
+import { useCurrentUserStore } from "@/modules/auth/authDataStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";

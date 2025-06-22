@@ -1,7 +1,7 @@
 import { Header } from "./Header";
 import { LeftSidebar } from "./LeftSidebar";
 import { Modal } from "../Modal";
-import { useCurrentUserStore } from "@/stores/authDataStore";
+import { useCurrentUserStore } from "@/modules/auth/authDataStore";
 
 export const MainLayout = (p: {
   children: React.ReactNode;

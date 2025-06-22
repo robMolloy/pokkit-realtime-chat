@@ -1,5 +1,5 @@
 import { useUsersStore } from "@/modules/users/usersStore";
-import { useCurrentUserStore, useUnverifiedIsLoggedInStore } from "@/stores/authDataStore";
+import { useCurrentUserStore, useUnverifiedIsLoggedInStore } from "@/modules/auth/authDataStore";
 
 const LogPage = () => {
   const usersStore = useUsersStore();

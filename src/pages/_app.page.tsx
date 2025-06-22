@@ -5,7 +5,7 @@ import { useAuth } from "@/modules/auth/useAuth";
 import { smartSubscribeToUsers } from "@/modules/users/dbUsersUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
 import { LoadingScreen } from "@/screens/LoadingScreen";
-import { useCurrentUserStore } from "@/stores/authDataStore";
+import { useCurrentUserStore } from "@/modules/auth/authDataStore";
 import { useThemeStore } from "@/stores/themeStore";
 import "@/styles/globals.css";
 import "@/styles/markdown.css";

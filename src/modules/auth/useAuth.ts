@@ -1,8 +1,8 @@
 import { pb } from "@/config/pocketbaseConfig";
 import { subscribeToUser } from "../users/dbUsersUtils";
 import { useEffect } from "react";
-import { useCurrentUserStore, useUnverifiedIsLoggedInStore } from "@/stores/authDataStore";
-import { useUnverifiedIsLoggedInSync } from "@/stores/authDataStore";
+import { useCurrentUserStore, useUnverifiedIsLoggedInStore } from "@/modules/auth/authDataStore";
+import { useUnverifiedIsLoggedInSync } from "@/modules/auth/authDataStore";
 
 export const useAuth = (p: {
   onIsLoading: () => void;
