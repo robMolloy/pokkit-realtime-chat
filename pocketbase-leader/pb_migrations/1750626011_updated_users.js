@@ -14,6 +14,7 @@ migrate((app) => {
     "type": "select",
     "values": [
       "pending",
+      "admin",
       "approved",
       "denied"
     ]

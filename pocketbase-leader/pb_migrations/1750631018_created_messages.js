@@ -21,10 +21,10 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "text1664698358",
+        "id": "text999008199",
         "max": 0,
         "min": 0,
-        "name": "contentText",
+        "name": "text",
         "pattern": "",
         "presentable": false,
         "primaryKey": false,
@@ -33,60 +33,17 @@ migrate((app) => {
         "type": "text"
       },
       {
+        "cascadeDelete": true,
+        "collectionId": "_pb_users_auth_",
         "hidden": false,
-        "id": "select3563894552",
+        "id": "relation1689669068",
         "maxSelect": 1,
-        "name": "contentType",
+        "minSelect": 0,
+        "name": "userId",
         "presentable": false,
         "required": false,
         "system": false,
-        "type": "select",
-        "values": [
-          "text",
-          "image"
-        ]
-      },
-      {
-        "autogeneratePattern": "",
-        "hidden": false,
-        "id": "text39128674",
-        "max": 0,
-        "min": 0,
-        "name": "contentSourceType",
-        "pattern": "",
-        "presentable": false,
-        "primaryKey": false,
-        "required": false,
-        "system": false,
-        "type": "text"
-      },
-      {
-        "autogeneratePattern": "",
-        "hidden": false,
-        "id": "text595110440",
-        "max": 0,
-        "min": 0,
-        "name": "contentSourceData",
-        "pattern": "",
-        "presentable": false,
-        "primaryKey": false,
-        "required": false,
-        "system": false,
-        "type": "text"
-      },
-      {
-        "autogeneratePattern": "",
-        "hidden": false,
-        "id": "text4220582852",
-        "max": 0,
-        "min": 0,
-        "name": "contentSourceMediaType",
-        "pattern": "",
-        "presentable": false,
-        "primaryKey": false,
-        "required": false,
-        "system": false,
-        "type": "text"
+        "type": "relation"
       },
       {
         "hidden": false,
@@ -109,10 +66,10 @@ migrate((app) => {
         "type": "autodate"
       }
     ],
-    "id": "pbc_2492048382",
+    "id": "pbc_2605467279",
     "indexes": [],
     "listRule": null,
-    "name": "aiMessages",
+    "name": "messages",
     "system": false,
     "type": "base",
     "updateRule": null,
@@ -121,7 +78,7 @@ migrate((app) => {
 
   return app.save(collection);
 }, (app) => {
-  const collection = app.findCollectionByNameOrId("pbc_2492048382");
+  const collection = app.findCollectionByNameOrId("pbc_2605467279");
 
   return app.delete(collection);
 })
