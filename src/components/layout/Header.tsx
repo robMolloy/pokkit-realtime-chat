@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CustomIcon } from "../CustomIcon";
 import { ThemeToggle } from "../ThemeToggle";
 
-export function Header() {
+export function Header(p: { isLoggedIn: boolean }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 flex-1 items-center justify-between px-6">
@@ -12,6 +12,8 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center space-x-2">
+          {p.isLoggedIn && <Link href="/log">Log</Link>}
+
           <ThemeToggle />
         </nav>
       </div>

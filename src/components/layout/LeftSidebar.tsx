@@ -2,14 +2,11 @@ import { Button } from "@/components/ui/button";
 import { pb } from "@/config/pocketbaseConfig";
 import { logout } from "@/modules/auth/dbAuthUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
-import { useAnthropicStore } from "@/modules/providers/anthropicStore";
 import { useCurrentUserStore } from "@/stores/authDataStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import { CustomIcon } from "../CustomIcon";
-
-const uuid = () => crypto.randomUUID();
 
 const SidebarButtonWrapper = (p: { children: ReactNode; href?: string; disabled?: boolean }) => {
   return p.href ? (
@@ -64,12 +61,10 @@ const SidebarButton = (p: {
 
 export function LeftSidebar() {
   const router = useRouter();
-  const threadId = router.query.threadId as string;
   const currentUserStore = useCurrentUserStore();
   const usersStore = useUsersStore();
   const pendingUsersCount = usersStore.data.filter((user) => user.status === "pending").length;
 
-  const anthropicStore = useAnthropicStore();
   return (
     <div className={"flex h-full flex-col"}>
       <div className="flex-1 overflow-y-auto p-2">
@@ -77,26 +72,6 @@ export function LeftSidebar() {
           <SidebarButton href="/" iconName={"Home"} isHighlighted={router.pathname === "/"}>
             Home
           </SidebarButton>
-
-          <SidebarButton
-            disabled={!anthropicStore.data}
-            iconName="Brain"
-            isHighlighted={false}
-            onClick={() => router.push(`/ai-chat/${uuid()}`)}
-          >
-            AI Chat
-          </SidebarButton>
-          {threadId && (
-            <SidebarButton
-              disabled={!anthropicStore.data}
-              isHighlighted={router.pathname.startsWith("/ai-chat")}
-              onClick={() => router.push(`/ai-chat/${threadId}`)}
-            >
-              <div className="z-100 w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                {threadId}
-              </div>
-            </SidebarButton>
-          )}
         </div>
       </div>
 
@@ -113,16 +88,7 @@ export function LeftSidebar() {
                 Users
               </SidebarButton>
             )}
-          {currentUserStore.data.status === "loggedIn" &&
-            currentUserStore.data.user.status === "admin" && (
-              <SidebarButton
-                href="/providers"
-                isHighlighted={router.pathname === "/providers"}
-                iconName="Brain"
-              >
-                Providers
-              </SidebarButton>
-            )}
+
           <SidebarButton iconName="LogOut" isHighlighted={false} onClick={() => logout({ pb })}>
             Log Out
           </SidebarButton>
