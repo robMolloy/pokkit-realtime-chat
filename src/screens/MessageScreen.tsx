@@ -11,6 +11,7 @@ import { useUsersStore } from "@/modules/users/usersStore";
 import { ChatMessage } from "@/components/ChatMessage";
 
 import { useRef, useState } from "react";
+import { TUser } from "@/modules/users/dbUsersUtils";
 
 export const MessageScreen = (p: { userId: string }) => {
   const [text, setText] = useState("");
@@ -30,19 +31,24 @@ export const MessageScreen = (p: { userId: string }) => {
                 <p className="text-gray-500">No messages yet.</p>
               </div>
             )}
-            {messageRecordsStore.data.map((message) => {
-              const user = usersStore.data.find((u) => u.id === message.userId);
-              const isOwnMessage = message.userId === p.userId;
+            {(() => {
+              const usersMap: Record<string, TUser> = {};
+              usersStore.data.forEach((user) => (usersMap[user.id] = user));
 
-              return (
-                <div
-                  key={message.id}
-                  className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                >
-                  <ChatMessage message={message} user={user} isOwnMessage={isOwnMessage} />
-                </div>
-              );
-            })}
+              return messageRecordsStore.data.map((message) => {
+                const user = usersMap[message.userId];
+                const isOwnMessage = message.userId === p.userId;
+
+                return (
+                  <div
+                    key={message.id}
+                    className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+                  >
+                    <ChatMessage message={message} user={user} isOwnMessage={isOwnMessage} />
+                  </div>
+                );
+              });
+            })()}
           </div>
         </ScrollContainer>
 
