@@ -8,6 +8,7 @@ import { useUsersStore } from "@/modules/users/usersStore";
 
 import { TUser } from "@/modules/users/dbUsersUtils";
 import { MessageForm } from "@/modules/messages/components/MessageForm";
+import { createImageMessageRecord } from "@/modules/messages/imageMessageRecordsDbUtils";
 
 export const MessageScreen = (p: { userId: string }) => {
   const messageRecordsStore = useTextMessageRecordsStore();
@@ -46,7 +47,20 @@ export const MessageScreen = (p: { userId: string }) => {
         <div className="mx-auto w-full max-w-[600px] px-4 py-2">
           <MessageForm
             onSubmit={async (x) => {
-              return createTextMessageRecord({ pb, data: { text: x.text, userId: p.userId } });
+              const resp = await createTextMessageRecord({
+                pb,
+                data: { text: x.text, userId: p.userId },
+              });
+
+              if (!resp.success) return { success: false };
+
+              const imagePromises = x.images.map((image) =>
+                createImageMessageRecord({ pb, data: { image, userId: p.userId } }),
+              );
+
+              await Promise.all(imagePromises);
+
+              return { success: true };
             }}
           />
         </div>

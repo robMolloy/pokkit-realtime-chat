@@ -9,10 +9,14 @@ const imageMessageRecordSchema = z.object({
   userId: z.string(),
 });
 export type TImageMessageRecord = z.infer<typeof imageMessageRecordSchema>;
+export type TImageFileMessageRecord = Omit<TImageMessageRecord, "image"> & { image: File };
 
 export const createImageMessageRecord = async (p: {
   pb: PocketBase;
-  data: Omit<TImageMessageRecord, "collectionId" | "collectionName" | "id" | "created" | "updated">;
+  data: Omit<
+    TImageFileMessageRecord,
+    "collectionId" | "collectionName" | "id" | "created" | "updated"
+  >;
 }) => {
   try {
     const resp = await p.pb.collection("imageMessages").create(p.data);
