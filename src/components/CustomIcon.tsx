@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  ImagePlus,
   ChevronDown,
   ChevronRight,
   Folder,
@@ -55,6 +56,7 @@ const iconMap = {
   FileCode,
   FileVideo,
   Image,
+  ImagePlus,
   FileSpreadsheet,
   Presentation,
   Cloud,
