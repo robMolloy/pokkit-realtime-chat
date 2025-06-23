@@ -1,25 +1,17 @@
-import { CustomIcon } from "@/components/CustomIcon";
+import { ChatMessage } from "@/components/ChatMessage";
 import { MainLayout } from "@/components/layout/Layout";
 import { ScrollContainer } from "@/components/ScrollContainer";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { pb } from "@/config/pocketbaseConfig";
-import { cn } from "@/lib/utils";
 import { createMessageRecord } from "@/modules/messages/dbMessageRecordsUtils";
 import { useMessageRecordsStore } from "@/modules/messages/messageRecordsStore";
 import { useUsersStore } from "@/modules/users/usersStore";
-import { ChatMessage } from "@/components/ChatMessage";
 
-import { useRef, useState } from "react";
 import { TUser } from "@/modules/users/dbUsersUtils";
+import { MessageForm } from "@/modules/messages/MessageForm";
 
 export const MessageScreen = (p: { userId: string }) => {
-  const [text, setText] = useState("");
   const messageRecordsStore = useMessageRecordsStore();
   const usersStore = useUsersStore();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const formElementRef = useRef<HTMLFormElement>(null);
 
   return (
     <MainLayout fillPageExactly padding={false}>
@@ -51,49 +43,15 @@ export const MessageScreen = (p: { userId: string }) => {
             })()}
           </div>
         </ScrollContainer>
-
         <div className="mx-auto w-full max-w-[600px] px-4 py-2">
-          <form
-            className="relative"
-            ref={formElementRef}
-            onSubmit={async (e) => {
-              e.preventDefault();
-
-              if (isLoading) return;
-              setIsLoading(true);
-
-              const resp = await createMessageRecord({
+          <MessageForm
+            onSubmit={async (text) => {
+              return createMessageRecord({
                 pb,
                 data: { text, userId: p.userId },
               });
-
-              if (resp.success) setText("");
-
-              setIsLoading(false);
             }}
-          >
-            <Textarea
-              placeholder="Type your message here."
-              value={text}
-              onInput={(e) => {
-                if (isLoading) return;
-
-                const value = (e.target as HTMLTextAreaElement).value;
-                setText(value);
-              }}
-              onKeyDown={async (e) => {
-                const isSubmitKeyCombo = e.key === "Enter" && (e.ctrlKey || e.metaKey);
-                if (isSubmitKeyCombo) formElementRef.current?.requestSubmit();
-              }}
-            />
-            <Button type="submit" className="absolute bottom-0 right-0 p-2">
-              <CustomIcon
-                size="sm"
-                iconName={isLoading ? "Loader" : "Upload"}
-                className={cn(isLoading && "animate-spin")}
-              />
-            </Button>
-          </form>
+          />
         </div>
       </div>
     </MainLayout>
