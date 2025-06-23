@@ -1,35 +1,35 @@
 import PocketBase from "pocketbase";
 import { z } from "zod";
 
-const textMessageRecordSchema = z.object({
+const imageMessageRecordSchema = z.object({
   collectionId: z.string(),
   collectionName: z.string(),
   id: z.string(),
-  text: z.string(),
+  image: z.string(),
   userId: z.string(),
 });
-export type TTextMessageRecord = z.infer<typeof textMessageRecordSchema>;
+export type TImageMessageRecord = z.infer<typeof imageMessageRecordSchema>;
 
-export const createTextMessageRecord = async (p: {
+export const createImageMessageRecord = async (p: {
   pb: PocketBase;
-  data: Omit<TTextMessageRecord, "collectionId" | "collectionName" | "id" | "created" | "updated">;
+  data: Omit<TImageMessageRecord, "collectionId" | "collectionName" | "id" | "created" | "updated">;
 }) => {
   try {
-    const resp = await p.pb.collection("textMessages").create(p.data);
+    const resp = await p.pb.collection("imageMessages").create(p.data);
 
-    return textMessageRecordSchema.safeParse(resp);
+    return imageMessageRecordSchema.safeParse(resp);
   } catch (error) {
     console.error(error);
     return { success: false, error } as const;
   }
 };
 
-export const listTextMessageRecords = async (p: { pb: PocketBase }) => {
+export const listImageMessageRecords = async (p: { pb: PocketBase }) => {
   try {
-    const initData = await p.pb.collection("textMessages").getFullList();
+    const initData = await p.pb.collection("imageMessages").getFullList();
 
     const data = initData
-      .map((x) => textMessageRecordSchema.safeParse(x))
+      .map((x) => imageMessageRecordSchema.safeParse(x))
       .filter((x) => x.success)
       .map((x) => x.data);
     return { success: true, data } as const;
@@ -38,30 +38,30 @@ export const listTextMessageRecords = async (p: { pb: PocketBase }) => {
   }
 };
 
-export const smartSubscribeToTextMessageRecords = async (p: {
+export const smartSubscribeToImageMessageRecords = async (p: {
   pb: PocketBase;
-  onChange: (x: TTextMessageRecord[]) => void;
+  onChange: (x: TImageMessageRecord[]) => void;
 }) => {
-  const listDocsResp = await listTextMessageRecords(p);
+  const listDocsResp = await listImageMessageRecords(p);
   if (!listDocsResp.success) return listDocsResp;
 
   let allDocs = listDocsResp.data;
   p.onChange(allDocs);
 
-  const unsub = p.pb.collection("textMessages").subscribe("*", (e) => {
+  const unsub = p.pb.collection("imageMessages").subscribe("*", (e) => {
     if (e.action === "create") {
-      const parseResp = textMessageRecordSchema.safeParse(e.record);
+      const parseResp = imageMessageRecordSchema.safeParse(e.record);
       if (parseResp.success) allDocs.push(parseResp.data);
     }
     if (e.action === "update") {
-      const parseResp = textMessageRecordSchema.safeParse(e.record);
+      const parseResp = imageMessageRecordSchema.safeParse(e.record);
       if (!parseResp.success) return;
 
       allDocs = allDocs.filter((x) => parseResp.data?.id !== x.id);
       allDocs.push(parseResp.data);
     }
     if (e.action === "delete") {
-      const parseResp = textMessageRecordSchema.safeParse(e.record);
+      const parseResp = imageMessageRecordSchema.safeParse(e.record);
       if (!parseResp.success) return;
 
       allDocs = allDocs.filter((x) => parseResp.data?.id !== x.id);

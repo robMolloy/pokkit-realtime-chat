@@ -10,14 +10,17 @@ import { useThemeStore } from "@/stores/themeStore";
 import "@/styles/globals.css";
 import "@/styles/markdown.css";
 import type { AppProps } from "next/app";
-import { smartSubscribeToMessageRecords } from "@/modules/messages/textMessageRecordsDbUtils";
+import { smartSubscribeToTextMessageRecords } from "@/modules/messages/textMessageRecordsDbUtils";
 import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecordsStore";
+import { useImageMessageRecordsStore } from "@/modules/messages/imageMessageRecordsStore";
+import { smartSubscribeToImageMessageRecords } from "@/modules/messages/imageMessageRecordsDbUtils";
 
 export default function App({ Component, pageProps }: AppProps) {
   const themeStore = useThemeStore();
   const usersStore = useUsersStore();
   const currentUserStore = useCurrentUserStore();
   const messageRecordsStore = useTextMessageRecordsStore();
+  const imageMessageRecordsStore = useImageMessageRecordsStore();
 
   themeStore.useThemeStoreSideEffect();
 
@@ -25,7 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
     onIsLoading: () => {},
     onIsLoggedIn: () => {
       smartSubscribeToUsers({ pb, onChange: (x) => usersStore.setData(x) });
-      smartSubscribeToMessageRecords({ pb, onChange: (x) => messageRecordsStore.setData(x) });
+      smartSubscribeToTextMessageRecords({ pb, onChange: (x) => messageRecordsStore.setData(x) });
+      smartSubscribeToImageMessageRecords({
+        pb,
+        onChange: (x) => imageMessageRecordsStore.setData(x),
+      });
     },
     onIsLoggedOut: () => {},
   });
