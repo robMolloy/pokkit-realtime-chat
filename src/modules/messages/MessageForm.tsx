@@ -5,7 +5,9 @@ import { cn } from "@/lib/utils";
 
 import { useRef, useState } from "react";
 
-export const MessageForm = (p: { onSubmit: (text: string) => Promise<{ success: boolean }> }) => {
+export const MessageForm = (p: {
+  onSubmit: (p: { text: string }) => Promise<{ success: boolean }>;
+}) => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +23,7 @@ export const MessageForm = (p: { onSubmit: (text: string) => Promise<{ success: 
         if (isLoading) return;
         setIsLoading(true);
 
-        const resp = await p.onSubmit(text);
+        const resp = await p.onSubmit({ text });
 
         if (resp.success) setText("");
 

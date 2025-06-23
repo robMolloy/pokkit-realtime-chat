@@ -45,11 +45,8 @@ export const MessageScreen = (p: { userId: string }) => {
         </ScrollContainer>
         <div className="mx-auto w-full max-w-[600px] px-4 py-2">
           <MessageForm
-            onSubmit={async (text) => {
-              return createMessageRecord({
-                pb,
-                data: { text, userId: p.userId },
-              });
+            onSubmit={async (x) => {
+              return createMessageRecord({ pb, data: { text: x.text, userId: p.userId } });
             }}
           />
         </div>
