@@ -91,11 +91,7 @@ export const MessageForm = (p: {
             const isSubmitKeyCombo = e.key === "Enter" && (e.ctrlKey || e.metaKey);
             if (isSubmitKeyCombo) formElementRef.current?.requestSubmit();
           }}
-          className={cn(isDragActive && "border-blue-500 bg-blue-50 dark:bg-blue-950/20")}
-          onClick={(e) => {
-            // Prevent the dropzone from capturing the click
-            e.stopPropagation();
-          }}
+          className={`min-h-[90px] ${cn(isDragActive && "border-blue-500 bg-blue-50 dark:bg-blue-950/20")}`}
         />
         {isDragActive && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-md bg-blue-500/10">

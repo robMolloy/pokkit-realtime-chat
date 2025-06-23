@@ -8,14 +8,14 @@ const messageRecordSchema = z.object({
   text: z.string(),
   userId: z.string(),
 });
-export type TMessageRecord = z.infer<typeof messageRecordSchema>;
+export type TTextMessageRecord = z.infer<typeof messageRecordSchema>;
 
-export const createMessageRecord = async (p: {
+export const createTextMessageRecord = async (p: {
   pb: PocketBase;
-  data: Omit<TMessageRecord, "collectionId" | "collectionName" | "id" | "created" | "updated">;
+  data: Omit<TTextMessageRecord, "collectionId" | "collectionName" | "id" | "created" | "updated">;
 }) => {
   try {
-    const resp = await p.pb.collection("messages").create(p.data);
+    const resp = await p.pb.collection("textMessages").create(p.data);
 
     return messageRecordSchema.safeParse(resp);
   } catch (error) {
@@ -24,9 +24,9 @@ export const createMessageRecord = async (p: {
   }
 };
 
-export const listMessageRecords = async (p: { pb: PocketBase }) => {
+export const listTextMessageRecords = async (p: { pb: PocketBase }) => {
   try {
-    const initData = await p.pb.collection("messages").getFullList();
+    const initData = await p.pb.collection("textMessages").getFullList();
 
     const data = initData
       .map((x) => messageRecordSchema.safeParse(x))
@@ -40,15 +40,15 @@ export const listMessageRecords = async (p: { pb: PocketBase }) => {
 
 export const smartSubscribeToMessageRecords = async (p: {
   pb: PocketBase;
-  onChange: (x: TMessageRecord[]) => void;
+  onChange: (x: TTextMessageRecord[]) => void;
 }) => {
-  const listDocsResp = await listMessageRecords(p);
+  const listDocsResp = await listTextMessageRecords(p);
   if (!listDocsResp.success) return listDocsResp;
 
   let allDocs = listDocsResp.data;
   p.onChange(allDocs);
 
-  const unsub = p.pb.collection("messages").subscribe("*", (e) => {
+  const unsub = p.pb.collection("textMessages").subscribe("*", (e) => {
     if (e.action === "create") {
       const parseResp = messageRecordSchema.safeParse(e.record);
       if (parseResp.success) allDocs.push(parseResp.data);

@@ -1,9 +1,9 @@
-import { TMessageRecord } from "@/modules/messages/dbMessageRecordsUtils";
+import { TTextMessageRecord } from "@/modules/messages/textMessageRecordsDbUtils";
 import { TUser } from "@/modules/users/dbUsersUtils";
 import { cn } from "@/lib/utils";
 
 export const ChatMessage = (p: {
-  message: TMessageRecord;
+  message: TTextMessageRecord;
   user?: TUser;
   isOwnMessage: boolean;
 }) => {

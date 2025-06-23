@@ -2,15 +2,15 @@ import { ChatMessage } from "@/components/ChatMessage";
 import { MainLayout } from "@/components/layout/Layout";
 import { ScrollContainer } from "@/components/ScrollContainer";
 import { pb } from "@/config/pocketbaseConfig";
-import { createMessageRecord } from "@/modules/messages/dbMessageRecordsUtils";
-import { useMessageRecordsStore } from "@/modules/messages/messageRecordsStore";
+import { createTextMessageRecord } from "@/modules/messages/textMessageRecordsDbUtils";
+import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecordsStore";
 import { useUsersStore } from "@/modules/users/usersStore";
 
 import { TUser } from "@/modules/users/dbUsersUtils";
-import { MessageForm } from "@/modules/messages/MessageForm";
+import { MessageForm } from "@/modules/messages/components/MessageForm";
 
 export const MessageScreen = (p: { userId: string }) => {
-  const messageRecordsStore = useMessageRecordsStore();
+  const messageRecordsStore = useTextMessageRecordsStore();
   const usersStore = useUsersStore();
 
   return (
@@ -46,7 +46,7 @@ export const MessageScreen = (p: { userId: string }) => {
         <div className="mx-auto w-full max-w-[600px] px-4 py-2">
           <MessageForm
             onSubmit={async (x) => {
-              return createMessageRecord({ pb, data: { text: x.text, userId: p.userId } });
+              return createTextMessageRecord({ pb, data: { text: x.text, userId: p.userId } });
             }}
           />
         </div>

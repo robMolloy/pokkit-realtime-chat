@@ -10,14 +10,14 @@ import { useThemeStore } from "@/stores/themeStore";
 import "@/styles/globals.css";
 import "@/styles/markdown.css";
 import type { AppProps } from "next/app";
-import { smartSubscribeToMessageRecords } from "@/modules/messages/dbMessageRecordsUtils";
-import { useMessageRecordsStore } from "@/modules/messages/messageRecordsStore";
+import { smartSubscribeToMessageRecords } from "@/modules/messages/textMessageRecordsDbUtils";
+import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecordsStore";
 
 export default function App({ Component, pageProps }: AppProps) {
   const themeStore = useThemeStore();
   const usersStore = useUsersStore();
   const currentUserStore = useCurrentUserStore();
-  const messageRecordsStore = useMessageRecordsStore();
+  const messageRecordsStore = useTextMessageRecordsStore();
 
   themeStore.useThemeStoreSideEffect();
 

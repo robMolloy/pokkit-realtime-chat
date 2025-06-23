@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { TMessageRecord } from "./dbMessageRecordsUtils";
+import { TTextMessageRecord } from "./textMessageRecordsDbUtils";
 
-type TState = TMessageRecord[];
+type TState = TTextMessageRecord[];
 
-export const useMessageRecordsStore = create<{
+export const useTextMessageRecordsStore = create<{
   data: TState;
   setData: (x: TState) => void;
   clear: () => void;
