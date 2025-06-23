@@ -35,7 +35,10 @@ export const MessageScreen = (p: { userId: string }) => {
               const isOwnMessage = message.userId === p.userId;
 
               return (
-                <div key={message.id} className={`flex ${false ? "justify-end" : "justify-start"}`}>
+                <div
+                  key={message.id}
+                  className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+                >
                   <ChatMessage message={message} user={user} isOwnMessage={isOwnMessage} />
                 </div>
               );

@@ -41,7 +41,10 @@ export const ScrollContainer = (p: { children: React.ReactNode; className?: stri
 
   return (
     <div className="relative flex-1">
-      <div className={cn("absolute inset-0 overflow-y-auto", p.className)} ref={scrollContainer}>
+      <div
+        className={cn("absolute inset-0 overflow-y-auto pl-2", p.className)}
+        ref={scrollContainer}
+      >
         {p.children}
       </div>
       {!isAtBottom && (
