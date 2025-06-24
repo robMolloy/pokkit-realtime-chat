@@ -2,16 +2,24 @@ import { ChatMessage } from "@/components/ChatMessage";
 import { MainLayout } from "@/components/layout/Layout";
 import { ScrollContainer } from "@/components/ScrollContainer";
 import { pb } from "@/config/pocketbaseConfig";
-import { createTextMessageRecord } from "@/modules/messages/textMessageRecordsDbUtils";
+import {
+  createTextMessageRecord,
+  TTextMessageRecord,
+} from "@/modules/messages/textMessageRecordsDbUtils";
 import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecordsStore";
 import { useUsersStore } from "@/modules/users/usersStore";
 
 import { TUser } from "@/modules/users/dbUsersUtils";
 import { MessageForm } from "@/modules/messages/components/MessageForm";
-import { createImageMessageRecord } from "@/modules/messages/imageMessageRecordsDbUtils";
+import {
+  createImageMessageRecord,
+  TImageMessageRecord,
+} from "@/modules/messages/imageMessageRecordsDbUtils";
+import { useImageMessageRecordsStore } from "@/modules/messages/imageMessageRecordsStore";
 
 export const MessageScreen = (p: { userId: string }) => {
   const messageRecordsStore = useTextMessageRecordsStore();
+  const imageMessageRecordsStore = useImageMessageRecordsStore();
   const usersStore = useUsersStore();
 
   return (
@@ -28,16 +36,51 @@ export const MessageScreen = (p: { userId: string }) => {
               const usersMap: Record<string, TUser> = {};
               usersStore.data.forEach((user) => (usersMap[user.id] = user));
 
-              return messageRecordsStore.data.map((message) => {
-                const user = usersMap[message.userId];
-                const isOwnMessage = message.userId === p.userId;
+              const imagesOnTextMessagesMap: Record<string, TImageMessageRecord[]> = {};
+
+              imageMessageRecordsStore.data.forEach((imageMessage) => {
+                if (!imagesOnTextMessagesMap[imageMessage.textMessageId]) {
+                  imagesOnTextMessagesMap[imageMessage.textMessageId] = [];
+                }
+                imagesOnTextMessagesMap[imageMessage.textMessageId]!.push(imageMessage);
+              });
+
+              const textMessagesWithImages: {
+                text: TTextMessageRecord;
+                images?: TImageMessageRecord[];
+              }[] = messageRecordsStore.data.map((textMessage) => {
+                return {
+                  text: textMessage,
+                  images: imagesOnTextMessagesMap[textMessage.id],
+                };
+              });
+
+              return textMessagesWithImages.map((x) => {
+                const user = usersMap[x.text.userId];
+                const isOwnMessage = x.text.userId === p.userId;
 
                 return (
                   <div
-                    key={message.id}
+                    key={x.text.id}
                     className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
                   >
-                    <ChatMessage message={message} user={user} isOwnMessage={isOwnMessage} />
+                    <ChatMessage
+                      user={user}
+                      isOwnMessage={isOwnMessage}
+                      message={
+                        <div>
+                          <div>{x.text.text}</div>
+                          <div className="flex gap-2">
+                            {x.images?.map((image) => (
+                              <img
+                                key={image.id}
+                                src={`${pb.files.getURL(image, image.image, { thumb: "100x100" })}`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      }
+                    />
                   </div>
                 );
               });
@@ -55,7 +98,10 @@ export const MessageScreen = (p: { userId: string }) => {
               if (!resp.success) return { success: false };
 
               const imagePromises = x.images.map((image) =>
-                createImageMessageRecord({ pb, data: { image, userId: p.userId } }),
+                createImageMessageRecord({
+                  pb,
+                  data: { image, userId: p.userId, textMessageId: resp.data.id },
+                }),
               );
 
               await Promise.all(imagePromises);

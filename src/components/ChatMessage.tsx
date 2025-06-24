@@ -1,9 +1,8 @@
-import { TTextMessageRecord } from "@/modules/messages/textMessageRecordsDbUtils";
-import { TUser } from "@/modules/users/dbUsersUtils";
 import { cn } from "@/lib/utils";
+import { TUser } from "@/modules/users/dbUsersUtils";
 
 export const ChatMessage = (p: {
-  message: TTextMessageRecord;
+  message: React.ReactNode;
   user?: TUser;
   isOwnMessage: boolean;
 }) => {
@@ -21,7 +20,7 @@ export const ChatMessage = (p: {
           {p.user.name}
         </div>
       )}
-      <div className="whitespace-pre-wrap break-words text-sm">{p.message.text}</div>
+      <div className="whitespace-pre-wrap break-words text-sm">{p.message}</div>
     </div>
   );
 };

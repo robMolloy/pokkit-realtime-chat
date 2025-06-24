@@ -7,6 +7,9 @@ const imageMessageRecordSchema = z.object({
   id: z.string(),
   image: z.string(),
   userId: z.string(),
+  textMessageId: z.string(),
+  created: z.string(),
+  updated: z.string(),
 });
 export type TImageMessageRecord = z.infer<typeof imageMessageRecordSchema>;
 export type TImageFileMessageRecord = Omit<TImageMessageRecord, "image"> & { image: File };
