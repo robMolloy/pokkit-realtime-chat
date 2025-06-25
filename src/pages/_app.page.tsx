@@ -56,14 +56,13 @@ export default function App({ Component, pageProps }: AppProps) {
             console.error(`this line should never be hit`);
             return;
           }
+          if (currentUserStore.data.user.verified === false) {
+            return <RequestVerificationScreen pb={pb} email={currentUserStore.data.user.email} />;
+          }
 
           if (currentUserStore.data.user.status === "pending") return <div>awaiting approval</div>;
 
           if (currentUserStore.data.user.status === "denied") return <div>blocked</div>;
-
-          if (currentUserStore.data.user.verified === false) {
-            return <RequestVerificationScreen pb={pb} email={currentUserStore.data.user.email} />;
-          }
 
           return <Component {...pageProps} />;
         })()}
