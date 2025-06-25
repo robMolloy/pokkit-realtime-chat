@@ -37,6 +37,7 @@ import {
   List,
   Brain,
   Loader,
+  Mail,
 } from "lucide-react";
 
 const iconMap = {
@@ -77,6 +78,7 @@ const iconMap = {
   List,
   Brain,
   Loader,
+  Mail,
 };
 
 export const iconSizeClass = {
