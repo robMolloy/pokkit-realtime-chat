@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  Clock,
   ImagePlus,
   ChevronDown,
   ChevronRight,
@@ -41,6 +42,7 @@ import {
 } from "lucide-react";
 
 const iconMap = {
+  Clock,
   Plus,
   Star,
   Folder,
