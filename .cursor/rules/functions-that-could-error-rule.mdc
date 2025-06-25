@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- When creating a function that could protentially error always use a try catch where the return extends {success:boolean}

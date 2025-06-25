@@ -5,5 +5,5 @@ const pbInstanceMap = {
   pbRemote: () => new PocketBase("https://pokkit-realtime-chat.pockethost.io"),
 };
 
-export const pb = pbInstanceMap.pbRemote();
+export const pb = pbInstanceMap.pbLocal();
 pb.autoCancellation(false);

@@ -8,6 +8,7 @@ export const userSchema = z.object({
   email: z.string(),
   name: z.string(),
   status: z.enum(["pending", "admin", "approved", "denied"]),
+  verified: z.boolean(),
   created: z.string(),
   updated: z.string(),
 });

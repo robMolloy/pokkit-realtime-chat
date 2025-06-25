@@ -1,19 +1,20 @@
 import { Layout } from "@/components/layout/Layout";
 import { pb } from "@/config/pocketbaseConfig";
+import { useCurrentUserStore } from "@/modules/auth/authDataStore";
 import { AuthForm } from "@/modules/auth/AuthForm";
 import { useAuth } from "@/modules/auth/useAuth";
+import { smartSubscribeToImageMessageRecords } from "@/modules/messages/imageMessageRecordsDbUtils";
+import { useImageMessageRecordsStore } from "@/modules/messages/imageMessageRecordsStore";
+import { smartSubscribeToTextMessageRecords } from "@/modules/messages/textMessageRecordsDbUtils";
+import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecordsStore";
 import { smartSubscribeToUsers } from "@/modules/users/dbUsersUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
 import { LoadingScreen } from "@/screens/LoadingScreen";
-import { useCurrentUserStore } from "@/modules/auth/authDataStore";
+import { RequestVerificationScreen } from "@/screens/RequestVerificationScreen";
 import { useThemeStore } from "@/stores/themeStore";
 import "@/styles/globals.css";
 import "@/styles/markdown.css";
 import type { AppProps } from "next/app";
-import { smartSubscribeToTextMessageRecords } from "@/modules/messages/textMessageRecordsDbUtils";
-import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecordsStore";
-import { useImageMessageRecordsStore } from "@/modules/messages/imageMessageRecordsStore";
-import { smartSubscribeToImageMessageRecords } from "@/modules/messages/imageMessageRecordsDbUtils";
 
 export default function App({ Component, pageProps }: AppProps) {
   const themeStore = useThemeStore();
@@ -39,12 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Layout
-        showLeftSidebar={
-          currentUserStore.data.status === "loggedIn" &&
-          ["approved", "admin"].includes(currentUserStore.data.user.status)
-        }
-      >
+      <Layout showLeftSidebar={currentUserStore.data.status === "loggedIn"}>
         {(() => {
           if (currentUserStore.data.status === "loading") return <LoadingScreen />;
 
@@ -64,6 +60,10 @@ export default function App({ Component, pageProps }: AppProps) {
           if (currentUserStore.data.user.status === "pending") return <div>awaiting approval</div>;
 
           if (currentUserStore.data.user.status === "denied") return <div>blocked</div>;
+
+          if (currentUserStore.data.user.verified === false) {
+            return <RequestVerificationScreen pb={pb} email={currentUserStore.data.user.email} />;
+          }
 
           return <Component {...pageProps} />;
         })()}
