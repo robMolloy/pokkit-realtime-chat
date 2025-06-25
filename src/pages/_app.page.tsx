@@ -10,6 +10,7 @@ import { useTextMessageRecordsStore } from "@/modules/messages/textMessageRecord
 import { smartSubscribeToUsers } from "@/modules/users/dbUsersUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
 import { AwaitingApprovalScreen } from "@/screens/AwaitingApprovalScreen";
+import { BlockedScreen } from "@/screens/BlockedScreen";
 import { LoadingScreen } from "@/screens/LoadingScreen";
 import { RequestVerificationScreen } from "@/screens/RequestVerificationScreen";
 import { useThemeStore } from "@/stores/themeStore";
@@ -65,7 +66,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
           if (currentUserStore.data.user.status === "pending") return <AwaitingApprovalScreen />;
 
-          if (currentUserStore.data.user.status === "denied") return <div>blocked</div>;
+          if (currentUserStore.data.user.status === "denied") return <BlockedScreen />;
 
           return <Component {...pageProps} />;
         })()}
