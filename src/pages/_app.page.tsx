@@ -15,6 +15,7 @@ import { useThemeStore } from "@/stores/themeStore";
 import "@/styles/globals.css";
 import "@/styles/markdown.css";
 import type { AppProps } from "next/app";
+import { Toaster } from "sonner";
 
 export default function App({ Component, pageProps }: AppProps) {
   const themeStore = useThemeStore();
@@ -41,6 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Layout showLeftSidebar={currentUserStore.data.status === "loggedIn"}>
+        <Toaster />
         {(() => {
           if (currentUserStore.data.status === "loading") return <LoadingScreen />;
 

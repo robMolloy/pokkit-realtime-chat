@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { pb } from "@/config/pocketbaseConfig";
 import { useState } from "react";
+import { requestVerificationEmail } from "./dbAuthUtils";
 
 interface AuthSignupProps {
   onSignUp: (success: boolean, message: string) => void;
@@ -37,6 +38,8 @@ export function AuthSignup({ onSignUp }: AuthSignupProps) {
         password,
         passwordConfirm: password,
       });
+
+      requestVerificationEmail({ pb, email });
 
       // After creating the user, log them in
       await pb.collection("users").authWithPassword(email, password);

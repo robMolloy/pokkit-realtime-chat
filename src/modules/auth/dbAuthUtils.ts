@@ -35,3 +35,14 @@ export const createUser = async (p: {
     return { success: false, error } as const;
   }
 };
+
+export const requestVerificationEmail = async (p: { pb: PocketBase; email: string }) => {
+  try {
+    const data = await p.pb.collection("users").requestVerification(p.email);
+    console.log(`dbAuthUtils.ts:${/*LL*/ 42}`, { data });
+    return { success: true, data } as const;
+  } catch (error) {
+    console.error("Error requesting verification email:", error);
+    return { success: false, error } as const;
+  }
+};

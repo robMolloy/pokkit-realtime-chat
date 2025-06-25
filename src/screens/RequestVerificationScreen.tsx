@@ -1,8 +1,14 @@
 import { CustomIcon } from "@/components/CustomIcon";
 import { Button } from "@/components/ui/button";
+import { requestVerificationEmail } from "@/modules/auth/dbAuthUtils";
+import Link from "next/link";
 import PocketBase from "pocketbase";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export const RequestVerificationScreen = (p: { pb: PocketBase; email: string }) => {
+  const [showResendButton, setShowResendButton] = useState(false);
+
   return (
     <div className="flex flex-col items-center justify-center px-4 pt-12">
       <div className="w-full max-w-md space-y-6">
@@ -27,13 +33,31 @@ export const RequestVerificationScreen = (p: { pb: PocketBase; email: string }) 
             </ul>
           </div>
 
-          <Button
-            onClick={() => p.pb.collection("users").requestVerification(p.email)}
-            variant="outline"
-            className="w-full"
-          >
-            Resend verification email
-          </Button>
+          <br />
+          {!showResendButton && (
+            <Link
+              href="#"
+              className="text-sm text-muted-foreground hover:underline"
+              onClick={() => setShowResendButton(true)}
+            >
+              Click here if you still haven't received the email
+            </Link>
+          )}
+
+          {showResendButton && (
+            <Button
+              onClick={async () => {
+                const resp = await requestVerificationEmail({ pb: p.pb, email: p.email });
+                toast(
+                  resp.success ? "Verification email sent" : "Error sending verification email",
+                );
+              }}
+              variant="outline"
+              className="w-full"
+            >
+              Resend verification email
+            </Button>
+          )}
         </div>
       </div>
     </div>
