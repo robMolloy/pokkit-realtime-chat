@@ -21,7 +21,10 @@ export function Layout(p: { children: React.ReactNode; showLeftSidebar: boolean 
 
   return (
     <div className="relative flex h-screen flex-col">
-      <Header isLoggedIn={currentUserStore.data.status === "loggedIn"} />
+      <Header
+        isLoggedIn={currentUserStore.data.status === "loggedIn"}
+        showLeftSidebar={p.showLeftSidebar}
+      />
       <div className="flex flex-1">
         {p.showLeftSidebar && (
           <aside className="hidden h-[calc(100vh-58px)] w-64 overflow-y-auto border-r bg-background md:block">

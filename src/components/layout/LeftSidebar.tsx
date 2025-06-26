@@ -66,7 +66,7 @@ export function LeftSidebar() {
   const pendingUsersCount = usersStore.data.filter((user) => user.status === "pending").length;
 
   return (
-    <div className={"flex h-full flex-col"}>
+    <div className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto p-2">
         <div className="flex flex-col gap-1">
           <SidebarButton href="/" iconName={"Home"} isHighlighted={router.pathname === "/"}>
