@@ -21,7 +21,7 @@ export function Header(p: { isLoggedIn: boolean; showLeftSidebar: boolean }) {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0">
+              <SheetContent side="left" className="flex w-64 flex-col p-0">
                 <div className="p-3">
                   <DialogTitle>Menu</DialogTitle>
                   <VisuallyHidden>

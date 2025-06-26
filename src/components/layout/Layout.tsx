@@ -27,7 +27,7 @@ export function Layout(p: { children: React.ReactNode; showLeftSidebar: boolean 
       />
       <div className="flex flex-1">
         {p.showLeftSidebar && (
-          <aside className="hidden h-[calc(100vh-58px)] w-64 overflow-y-auto border-r bg-background md:block">
+          <aside className="hidden h-[calc(100vh-58px)] w-64 overflow-y-auto border-r bg-background md:flex">
             <LeftSidebar />
           </aside>
         )}
