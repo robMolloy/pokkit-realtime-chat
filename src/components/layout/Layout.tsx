@@ -1,7 +1,13 @@
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useCurrentUserStore } from "@/modules/auth/authDataStore";
+import { Menu } from "lucide-react";
+import { Modal } from "../Modal";
 import { Header } from "./Header";
 import { LeftSidebar } from "./LeftSidebar";
-import { Modal } from "../Modal";
-import { useCurrentUserStore } from "@/modules/auth/authDataStore";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import React from "react";
+import { DialogDescription, DialogTitle } from "../ui/dialog";
 
 export const MainLayout = (p: {
   children: React.ReactNode;
@@ -23,15 +29,38 @@ export function Layout(p: { children: React.ReactNode; showLeftSidebar: boolean 
     <div className="relative flex h-screen flex-col">
       <Header
         isLoggedIn={currentUserStore.data.status === "loggedIn"}
-        showLeftSidebar={p.showLeftSidebar}
+        leftComponent={
+          p.showLeftSidebar && (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="flex w-64 flex-col p-0">
+                <div className="p-3">
+                  <DialogTitle>Menu</DialogTitle>
+                  <VisuallyHidden>
+                    <DialogDescription className="sr-only">
+                      Navigation menu for the application
+                    </DialogDescription>
+                  </VisuallyHidden>
+                </div>
+
+                <LeftSidebar />
+              </SheetContent>
+            </Sheet>
+          )
+        }
       />
       <div className="flex flex-1">
         {p.showLeftSidebar && (
-          <aside className="hidden h-[calc(100vh-58px)] w-64 overflow-y-auto border-r bg-background md:flex">
+          <aside className="hidden w-64 overflow-y-auto border-r bg-background md:flex">
             <LeftSidebar />
           </aside>
         )}
-        <main className="h-[calc(100vh-4rem)] w-full overflow-y-auto">{p.children}</main>
+        <main className="w-full overflow-y-auto">{p.children}</main>
       </div>
       <Modal />
     </div>

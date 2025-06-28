@@ -73,6 +73,7 @@ export const MessageScreen = (p: { userId: string }) => {
                           <div className="flex gap-2">
                             {x.images?.map((image) => (
                               <img
+                                className="h-24 w-24"
                                 key={image.id}
                                 src={`${pb.files.getURL(image, image.image, { thumb: "100x100" })}`}
                               />
