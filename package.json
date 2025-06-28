@@ -12,7 +12,7 @@
     "db:start:dev": "pocketbase-leader/start-pocketbase.js",
     "dev1": "npm run dev",
     "dev2": "npm run tsc",
-    "dev3": "./pocketbase-leader/pocketbase serve"
+    "dev3": "./pocketbase-leader/pocketbase serve --http=\"0.0.0.0:8090\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",
