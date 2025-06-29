@@ -44,6 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Layout showLeftSidebar={currentUserStore.data.status === "loggedIn"}>
+        asd
         <Toaster />
         {(() => {
           if (currentUserStore.data.status === "loading") return <LoadingScreen />;
